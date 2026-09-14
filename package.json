@@ -1,0 +1,49 @@
+{
+  "name": "fivem-mcp",
+  "version": "1.0.0",
+  "description": "MCP server para operar o servidor FiveM (console do txAdmin) a partir de qualquer agente de IA",
+  "type": "module",
+  "bin": {
+    "fivem-mcp": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "http": "node src/index.js --http",
+    "doctor": "node src/index.js --doctor",
+    "setup": "node src/setup.js",
+    "register": "node src/register.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "socket.io-client": "^4.8.1",
+    "zod": "^3.25.0"
+  },
+  "license": "MIT",
+  "author": "Gabriel Freitas (@ggfto)",
+  "homepage": "https://github.com/ggfto/fivem-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggfto/fivem-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ggfto/fivem-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "fivem",
+    "txadmin",
+    "fxserver",
+    "gta",
+    "ai-agent"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "src",
+    "tools",
+    "README.md",
+    "LICENSE"
+  ]
+}
