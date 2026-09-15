@@ -3,7 +3,7 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 
 export const CONFIG_PATH =
-  process.env.FIVEM_MCP_CONFIG || join(homedir(), '.config', 'fivem-mcp', 'config.json');
+  process.env.YAFMCP_CONFIG || join(homedir(), '.config', 'yafmcp', 'config.json');
 
 const DEFAULTS = {
   // Painel do txAdmin — é por ele que o comando entra no console do FXServer.

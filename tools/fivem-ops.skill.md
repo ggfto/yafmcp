@@ -13,7 +13,7 @@ entra pelo MCP **`fivem`** — nunca por `docker attach`, nem editando cfg na m�
 | `fivem_server_control` | `start` / `stop` / `restart` do processo do servidor. Derruba todo mundo — só com pedido explícito. |
 
 Sem MCP disponível, o mesmo comando sai por
-`node ~/fivem-mcp/src/index.js --exec "<comando>"`.
+`node ~/yafmcp/src/index.js --exec "<comando>"`.
 
 ## Como responder
 

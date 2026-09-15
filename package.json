@@ -1,17 +1,18 @@
 {
-  "name": "fivem-mcp",
+  "name": "yafmcp",
   "version": "1.0.0",
-  "description": "MCP server para operar o servidor FiveM (console do txAdmin) a partir de qualquer agente de IA",
+  "description": "Yet another FiveM MCP — executa comandos no console do FiveM (via txAdmin) a partir de qualquer agente de IA",
   "type": "module",
   "bin": {
-    "fivem-mcp": "./src/index.js"
+    "yafmcp": "./src/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
     "http": "node src/index.js --http",
     "doctor": "node src/index.js --doctor",
     "setup": "node src/setup.js",
-    "register": "node src/register.js"
+    "register": "node src/register.js",
+    "test": "node --test"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
@@ -20,13 +21,13 @@
   },
   "license": "MIT",
   "author": "Gabriel Freitas (@ggfto)",
-  "homepage": "https://github.com/ggfto/fivem-mcp#readme",
+  "homepage": "https://github.com/ggfto/yafmcp#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ggfto/fivem-mcp.git"
+    "url": "git+https://github.com/ggfto/yafmcp.git"
   },
   "bugs": {
-    "url": "https://github.com/ggfto/fivem-mcp/issues"
+    "url": "https://github.com/ggfto/yafmcp/issues"
   },
   "keywords": [
     "mcp",
@@ -45,5 +46,8 @@
     "tools",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

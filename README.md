@@ -1,4 +1,4 @@
-# fivem-mcp
+# yafmcp
 
 Servidor **MCP** para operar um servidor **FiveM**: o agente manda um comando, o comando
 entra no console do FXServer e a saída do console volta como resposta.
@@ -22,11 +22,20 @@ ao container.
 
 ## Instalação
 
+Pelo npm, sem clonar nada:
+
 ```bash
-git clone https://github.com/ggfto/fivem-mcp.git
-cd fivem-mcp
+npx -y yafmcp --setup     # grava as credenciais do txAdmin
+npx -y yafmcp --doctor    # confere a conexão
+```
+
+Ou do repositório, para mexer no código:
+
+```bash
+git clone https://github.com/ggfto/yafmcp.git
+cd yafmcp
 npm install
-npm run setup     # pergunta URL do txAdmin, usuário e senha; grava 600 em ~/.config/fivem-mcp/config.json
+npm run setup     # pergunta URL do txAdmin, usuário e senha; grava 600 em ~/.config/yafmcp/config.json
 npm run doctor    # loga, conecta no console e roda um "version"
 ```
 
@@ -35,7 +44,7 @@ Requer Node 18+ (testado no 22) e um admin do txAdmin com permissão de console
 
 ### Configuração
 
-`~/.config/fivem-mcp/config.json` (ou variáveis de ambiente, que têm precedência):
+`~/.config/yafmcp/config.json` (ou variáveis de ambiente, que têm precedência):
 
 | Campo | Env | Padrão |
 | --- | --- | --- |
@@ -56,21 +65,24 @@ node src/register.js --print  # só imprime os trechos, você cola onde quiser
 
 Ou na mão:
 
+Em todos os exemplos abaixo, `npx -y yafmcp` e `node /caminho/yafmcp/src/index.js`
+são intercambiáveis — o primeiro dispensa clone, o segundo usa a sua cópia local.
+
 ```bash
 # Claude Code
-claude mcp add --scope user fivem -- node /caminho/fivem-mcp/src/index.js
+claude mcp add --scope user fivem -- npx -y yafmcp
 ```
 
 ```toml
 # Codex — ~/.codex/config.toml
 [mcp_servers.fivem]
 command = "node"
-args = ["/caminho/fivem-mcp/src/index.js"]
+args = ["/caminho/yafmcp/src/index.js"]
 ```
 
 ```json
 // OpenCode — ~/.config/opencode/opencode.json
-{ "mcp": { "fivem": { "type": "local", "command": ["node", "/caminho/fivem-mcp/src/index.js"], "enabled": true } } }
+{ "mcp": { "fivem": { "type": "local", "command": ["node", "/caminho/yafmcp/src/index.js"], "enabled": true } } }
 ```
 
 ```yaml
@@ -79,7 +91,7 @@ mcp_servers:
   fivem:
     command: node
     args:
-      - /caminho/fivem-mcp/src/index.js
+      - /caminho/yafmcp/src/index.js
     enabled: true
 ```
 
@@ -128,6 +140,19 @@ Nenhum comando é bloqueado: quem tem o MCP tem o console do servidor inteiro. A
 fica só no arquivo de config (modo 600) ou no ambiente — nunca no repositório, nunca no
 prompt do agente. Se isso for demais para o seu caso, dê ao MCP um admin do txAdmin com
 permissões reduzidas: a checagem de permissão é feita pelo próprio txAdmin.
+
+## Publicando o pacote
+
+`.github/workflows/publish.yml` roda ao publicar uma **release** no GitHub (ou pela aba
+Actions) e manda o mesmo código para os dois registries:
+
+- **npmjs.com** como `yafmcp`, público — precisa do segredo `NPM_TOKEN` (token de
+  automação da sua conta npm) em Settings → Secrets → Actions.
+- **GitHub Packages** como `@<owner>/yafmcp` — usa o `GITHUB_TOKEN` do próprio job, sem
+  segredo nenhum.
+
+Antes de publicar, suba a versão (`npm version patch|minor|major`), empurre a tag e crie
+a release. `.github/workflows/ci.yml` roda os testes em cada push, no Node 20 e 22.
 
 ## Licença
 

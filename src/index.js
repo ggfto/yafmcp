@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * fivem-mcp — servidor MCP para operar o servidor FiveM.
+ * yafmcp — servidor MCP para operar o servidor FiveM.
  *
  * Os comandos entram no console do FXServer pelo live console do txAdmin
  * (socket.io, sala "liveconsole") e a saída do console volta como resposta.
@@ -14,6 +14,8 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
+import { pathToFileURL } from 'node:url';
+import { resolve as resolvePath } from 'node:path';
 
 import { loadConfig, CONFIG_PATH } from './config.js';
 import { TxAdminClient } from './txadmin.js';
@@ -25,6 +27,8 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--http') args.mode = 'http';
+    else if (a === '--setup') args.mode = 'setup';
+    else if (a === '--help' || a === '-h') args.mode = 'help';
     else if (a === '--doctor') args.mode = 'doctor';
     else if (a === '--exec') {
       args.mode = 'exec';
@@ -52,7 +56,7 @@ const fail = (s) => ({ content: [{ type: 'text', text: s }], isError: true });
 
 export function buildServer(cfg, tx) {
   const server = new McpServer(
-    { name: 'fivem-mcp', version: VERSION },
+    { name: 'yafmcp', version: VERSION },
     {
       instructions:
         'Operação do servidor FiveM. fivem_command executa qualquer comando no console do ' +
@@ -195,14 +199,34 @@ export function buildServer(cfg, tx) {
   return server;
 }
 
+const HELP = `yafmcp ${VERSION} — comandos no console do FiveM, por MCP
+
+  yafmcp                      MCP por stdio (é assim que um agente usa)
+  yafmcp --http [--host H] [--port N]
+                              MCP por HTTP streamable em /mcp
+  yafmcp --setup              grava URL/usuário/senha do txAdmin
+  yafmcp --doctor             testa login, console e um comando
+  yafmcp --exec "<comando>"   roda um comando e imprime a saída
+`;
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+
+  if (args.mode === 'help') {
+    console.log(HELP);
+    return;
+  }
+  // O setup existe justamente para quando ainda não há config para carregar.
+  if (args.mode === 'setup') {
+    await import('./setup.js');
+    return;
+  }
 
   let cfg;
   try {
     cfg = loadConfig();
   } catch (err) {
-    console.error(`[fivem-mcp] ${err.message}`);
+    console.error(`[yafmcp] ${err.message}`);
     process.exit(78); // EX_CONFIG
   }
   const tx = new TxAdminClient(cfg);
@@ -267,17 +291,23 @@ async function main() {
       await transport.handleRequest(req, res, body);
     });
     httpServer.listen(args.port, args.host, () => {
-      console.error(`[fivem-mcp] MCP em http://${args.host}:${args.port}/mcp`);
+      console.error(`[yafmcp] MCP em http://${args.host}:${args.port}/mcp`);
     });
     return;
   }
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('[fivem-mcp] pronto (stdio)');
+  console.error('[yafmcp] pronto (stdio)');
 }
 
-main().catch((err) => {
-  console.error(`[fivem-mcp] erro fatal: ${err.stack ?? err.message}`);
-  process.exit(1);
-});
+// Só roda quando é o processo principal: os testes importam buildServer daqui.
+const isEntrypoint =
+  process.argv[1] && import.meta.url === pathToFileURL(resolvePath(process.argv[1])).href;
+
+if (isEntrypoint) {
+  main().catch((err) => {
+    console.error(`[yafmcp] erro fatal: ${err.stack ?? err.message}`);
+    process.exit(1);
+  });
+}

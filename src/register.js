@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Registra o fivem-mcp nos clientes MCP da máquina.
+ * Registra o yafmcp nos clientes MCP da máquina.
  *
  *   node src/register.js            # todos os clientes que existirem aqui
  *   node src/register.js --claude --hermes
@@ -57,9 +57,9 @@ function registerHermes() {
   } else {
     next = `${raw.replace(/\s*$/, '\n')}\nmcp_servers:\n${block}`;
   }
-  writeFileSync(`${path}.bak-fivem-mcp`, raw);
+  writeFileSync(`${path}.bak-yafmcp`, raw);
   writeFileSync(path, next);
-  note('hermes', 'ok', `${path} (backup em ${path}.bak-fivem-mcp)`);
+  note('hermes', 'ok', `${path} (backup em ${path}.bak-yafmcp)`);
 }
 
 function registerCodex() {
@@ -112,7 +112,7 @@ if (want('hermes')) registerHermes();
 if (want('codex')) registerCodex();
 if (want('opencode')) registerOpencode();
 
-console.log(`fivem-mcp: ${ENTRY}\n`);
+console.log(`yafmcp: ${ENTRY}\n`);
 for (const r of results) {
   console.log(`${r.target.padEnd(12)} ${r.status.padEnd(7)} ${r.detail ?? ''}`);
   if (r.status === 'manual' || r.status === 'pulado') {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Grava ~/.config/fivem-mcp/config.json com as credenciais do txAdmin.
+ * Grava ~/.config/yafmcp/config.json com as credenciais do txAdmin.
  * A senha é digitada escondida e o arquivo nasce com permissão 600.
  */
 import { mkdirSync, writeFileSync, existsSync, readFileSync, chmodSync } from 'node:fs';
