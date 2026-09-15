@@ -72,8 +72,12 @@ export function buildServer(cfg, tx) {
       title: 'Executar comando no console do FiveM',
       description:
         'Executa um comando no console do FXServer e devolve o que o console imprimiu. ' +
-        'Aceita qualquer comando do servidor (status, refresh, ensure/restart/stop <resource>, ' +
-        'say, kick, set/setr <var> <valor>, svgm, etc.). A captura fecha quando o console fica ' +
+        'Aceita qualquer comando do servidor. Para (re)carregar um resource use ' +
+        '"ensure <resource>": ele inicia o que está parado e reinicia o que está rodando, ' +
+        'sem precisar saber o estado antes — "start" e "restart" só valem quando falhar em ' +
+        'um dos dois casos é justamente o que você quer. Resource novo no disco ou manifest ' +
+        'alterado pede "refresh" antes. Também aceita stop, say, kick, set/setr <var> <valor>, ' +
+        'etc. A captura fecha quando o console fica ' +
         'quieto; comandos que demoram para responder pedem timeoutMs maior.',
       inputSchema: {
         command: z.string().min(1).describe('Comando exatamente como se digitasse no console'),
@@ -180,7 +184,7 @@ export function buildServer(cfg, tx) {
       title: 'Controlar o processo do servidor',
       description:
         'start, stop ou restart do FXServer pelo txAdmin. Derruba todo mundo que estiver online — ' +
-        'para recarregar um resource use fivem_command com "restart <resource>".',
+        'para recarregar um resource use fivem_command com "ensure <resource>".',
       inputSchema: {
         action: z.enum(['start', 'stop', 'restart']).describe('Ação no processo do servidor'),
       },

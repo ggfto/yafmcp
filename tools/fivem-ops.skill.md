@@ -29,17 +29,20 @@ responder (`refresh` num servidor grande, `ensure` de resource pesado) pede
 ## Comandos que aparecem sempre
 
 ```
-refresh                  # relê a lista de resources do disco
-ensure <resource>        # (re)inicia um resource; start/stop/restart também valem
-restart <resource>       # reinicia só aquele resource — não derruba o servidor
+ensure <resource>        # (re)carrega um resource — o padrão para "recarrega o X"
+refresh                  # relê a lista de resources do disco; antes de ensure em coisa nova
+stop <resource>          # para um resource (ensure não para nada)
 say <mensagem>           # chat global
 status / players         # prefira fivem_status e fivem_players
 <convar>                 # imprime valor atual, ex.: sv_enforceGameBuild
 set <convar> <valor>     # convar de servidor; setr para replicado no cliente
 ```
 
-`restart <resource>` é quase sempre a resposta certa para "recarrega X" —
-`fivem_server_control restart` reinicia o servidor inteiro e desconecta todos.
+Prefira `ensure` a `start`/`restart`: ele cobre os dois casos e não erra por causa do
+estado em que o resource estava. `start` e `restart` ficam para quando falhar no outro
+caso é o sinal que você quer — `restart` num resource parado reclama, e às vezes é
+exatamente essa a informação. `fivem_server_control restart` é outra coisa: reinicia o
+servidor inteiro e desconecta todos.
 
 ## Onde as coisas moram
 

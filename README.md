@@ -99,18 +99,19 @@ mcp_servers:
 
 | Ferramenta | O que faz |
 | --- | --- |
-| `fivem_command` | Executa qualquer comando no console e devolve a saída. `timeoutMs`, `quietMs` e `timestamps` são opcionais. |
+| `fivem_command` | Executa qualquer comando no console e devolve a saída. Para resource, `ensure <resource>` é o padrão (inicia ou reinicia); `refresh` antes se o resource é novo no disco. `timeoutMs`, `quietMs` e `timestamps` são opcionais. |
 | `fivem_console` | Últimas linhas do console capturadas pela sessão, com `filter` por regex. |
 | `fivem_status` | No ar?, hostname, jogadores, game build, nº de resources. |
 | `fivem_players` | Jogadores online com id, ping e identificadores. |
 | `fivem_server_control` | `start` / `stop` / `restart` do processo do servidor (derruba quem estiver online). |
 
 ```
-> reinicia o resource mri_Qadmin
-  fivem_command("restart mri_Qadmin")
-  $ restart mri_Qadmin
-  [   script:mri_Qadmin] Stopping resource mri_Qadmin
-  [   script:mri_Qadmin] Started resource mri_Qadmin
+> recarrega o resource mri_Qadmin
+  fivem_command("ensure mri_Qadmin")
+  $ ensure mri_Qadmin
+  [           resources] Stopping resource mri_Qadmin
+  [    c-scripting-core] Creating script environments for mri_Qadmin
+  [           resources] Started resource mri_Qadmin
 ```
 
 ## Outros modos
